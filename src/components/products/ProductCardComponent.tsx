@@ -20,6 +20,7 @@ interface ProductPrice {
 }
 
 export interface ProductResponse {
+  num?: number;
   id?: number,
   images: string[],
   title: string,

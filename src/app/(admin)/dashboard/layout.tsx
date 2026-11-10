@@ -1,3 +1,5 @@
+"use client";
+
 import {
   BarChart3,
   ClipboardList,
@@ -33,11 +35,12 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Suspense } from "react";
 type NavItem = {
   label: string;
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   href: string;
-  isActive?: boolean;
 };
 
 type NavGroup = {
@@ -71,7 +74,6 @@ const sidebarData: SidebarData = {
           label: "Dashboard",
           icon: LayoutDashboard,
           href: "/dashboard",
-          isActive: true,
         },
         { label: "Team", icon: ClipboardList, href: "/dashboard/team" },
         { label: "User", icon: BarChart3, href: "/dashboard/users" },
@@ -113,6 +115,8 @@ const SidebarLogo = ({ logo }: { logo: SidebarData["logo"] }) => {
 };
 
 const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
+  const pathname = usePathname();
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -128,7 +132,12 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
               <SidebarMenu>
                 {group.items.map((item) => (
                   <SidebarMenuItem key={item.label}>
-                    <SidebarMenuButton isActive={item.isActive} render={<Link href={item.href} />}>{item.label}</SidebarMenuButton>
+                    <SidebarMenuButton
+                      isActive={pathname === item.href}
+                      render={<Link href={item.href} />}
+                    >
+                      {item.label}
+                    </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
               </SidebarMenu>
@@ -143,7 +152,12 @@ const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
             <SidebarMenu>
               {sidebarData.footerGroup.items.map((item) => (
                 <SidebarMenuItem key={item.label}>
-                  <SidebarMenuButton render={<Link href={item.href} />}>{item.label}</SidebarMenuButton>
+                  <SidebarMenuButton
+                    isActive={pathname === item.href}
+                    render={<Link href={item.href} />}
+                  >
+                    {item.label}
+                  </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
@@ -173,6 +187,8 @@ export default function DashboardLayout(
     team: React.ReactNode,
     products: React.ReactNode
   }) {
+  const pathname = usePathname();
+
   return (
     <SidebarProvider className={cn(className)}>
       <AppSidebar />
@@ -196,11 +212,12 @@ export default function DashboardLayout(
           </Breadcrumb>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 ">
-          {/* <div className="min-h-screen flex-1 rounded-xl bg-muted/50 md:min-h-min" /> */}
-          {products}
-          {team}
-          {users}
-          {children}
+          <Suspense fallback={<div className="p-4 text-muted-foreground">Loading...</div>}>
+            {pathname === "/dashboard" && children}
+            {pathname.startsWith("/dashboard/products") && products}
+            {pathname.startsWith("/dashboard/team") && team}
+            {pathname.startsWith("/dashboard/users") && users}
+          </Suspense>
         </div>
       </SidebarInset>
     </SidebarProvider>
