@@ -6,6 +6,11 @@ import { use } from "react";
 
 export default function ProductDetailComponent({product}: {product: Promise<ProductResponseDetail>}) {
     const products = use(product)
+    const imageSrc =
+      products?.images && products.images.length > 0 && products.images[0]
+        ? products.images[0]
+        : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSHQ2QS9U-YKh9fPiHsVWMcXMFKbZXlPQ_BpGCWYDTbjkaaakSgu-PZIJU&s=10";
+
   return (
     <div className="bg-gray-100">
   <div className="container mx-auto px-4 py-8">
@@ -13,8 +18,8 @@ export default function ProductDetailComponent({product}: {product: Promise<Prod
       {/* Product Images */}
       <div className="w-full md:w-1/2 px-4 mb-8">
         <Image
-          src={products.images[0]}
-          alt="Product"
+          src={imageSrc}
+          alt={products?.title || "Product"}
           className="w-full h-auto rounded-lg shadow-md mb-4"
           id="mainImage"
           width={300}

@@ -1,9 +1,8 @@
-
-
 export default function page() {
   return (
     <div>
-      fuck you thana page
+      Contact Me 
     </div>
+    
   )
 }

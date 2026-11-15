@@ -20,7 +20,7 @@ export default function ProductCardListComponent() {
   
       {
         products?.map(({images, title, description, price, id})=>(
-            <Link href="hello " key={id}>
+            <Link href={`/products/${id}`} key={id} className="flex h-full">
             <ProductCardComponent key={id}  images={images} title={title} description={description} price={price}/>
             </Link>
         ))

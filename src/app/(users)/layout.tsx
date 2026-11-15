@@ -1,5 +1,7 @@
 import NavbarComponent from "@/components/layout/navbar/NavbarComponent";
 import React, { Suspense } from "react";
+import Loading from "../loading";
+import Footer from "@/components/shadcn-space/blocks/footer-01/footer";
 
 export default function UserLayout({
   children,
@@ -11,10 +13,10 @@ export default function UserLayout({
       <Suspense fallback={<div className="h-16" />}>
         <NavbarComponent />
       </Suspense>
-      <Suspense fallback={<div className="container mx-auto p-8">Loading...</div>}>
+      <Suspense fallback={<Loading/>}>
         {children}
       </Suspense>
-      <footer className="bg-blue-500">Footer</footer>
+      <Footer/>
     </div>
   );
 }

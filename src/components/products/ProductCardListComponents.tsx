@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useEffect, useState } from "react";
@@ -21,16 +20,13 @@ export default function ProductCardListComponents() {
     fetchData(); //calling fetchData function
   },[])
 
-  // There are 3 dependencies of useEffect hook
-  // 1. empty depedencies
-  // 2. array dependencies [] : mount once but use forever 
-  // 3. array list dependencies : [id], [uuid]
+
 
   return (
     <section className="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-8 gap-8 mx-auto">
       {
-        products?.map(({id, images, title, description, price}) => (
-         <Link href={`/products/${id}`} key={id}>
+        products?.map(({id, images, title, description, price,category}) => (
+         <Link href={`/products/${id}?category=${category}`} key={id} className="flex h-full">
            <ProductCardComponent
             images={images}
             title={title}

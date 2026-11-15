@@ -63,44 +63,31 @@ export interface ProductResponseDetail {
 // }
 
 const ProductCardComponent = ({ images,title,description,price }: ProductResponse) => {
-//   const { regular, sale, currency } = PRODUCT_CARD.price;
     const placeImage = images[0]? images[0] : 'https://images.seeklogo.com/logo-png/5/1/falcon-logo-png_seeklogo-51728.png'
   return (
-    
     <div className={cn(
-        "block max-w-md transition-opacity hover:opacity-80",
-        
+        "flex flex-col h-full w-full transition-opacity hover:opacity-80"
       )}>
-      <Card className="h-full overflow-hidden p-0">
-        <CardHeader className="relative block p-0">
+      <Card className="flex flex-col h-full overflow-hidden p-0">
+        <CardHeader className="relative block p-0 shrink-0">
           <AspectRatio ratio={1.268115942} className="overflow-hidden">
             <Image
               src={placeImage}
-              alt=''
+              alt={title || ''}
               width={200}
               height={200}
               className="block size-full object-cover object-center"
             />
           </AspectRatio>
-          {/* {PRODUCT_CARD.badge && (
-            <Badge
-              style={{
-                background: PRODUCT_CARD.badge.backgroundColor,
-              }}
-              className="absolute start-4 top-4"
-            >
-              {PRODUCT_CARD.badge.text}
-            </Badge>
-          )} */}
         </CardHeader>
-        <CardContent className="flex h-full flex-col gap-4 pb-6">
-          <CardTitle className="text-xl font-semibold">
+        <CardContent className="flex flex-1 flex-col gap-4 p-6">
+          <CardTitle className="text-xl font-semibold line-clamp-2">
             {title}
           </CardTitle>
-          <CardDescription className="font-medium text-muted-foreground">
+          <CardDescription className="font-medium text-muted-foreground line-clamp-3">
             {description}
           </CardDescription>
-          <div className="mt-auto">
+          <div className="mt-auto pt-2">
             <Price onSale={price != null} className="text-lg font-semibold">
               <PriceValue
                 price={price}
