@@ -1,31 +1,24 @@
 
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req:NextRequest,{
-  params,
-  searchParams
-}:{
-  params: Promise<{id:number | string}>,
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}){
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: number | string }> }
+) {
+  const { id } = await params;
+  const { searchParams } = new URL(req.url);
+  const category = searchParams.get("category");
 
-  const {id} = await params;
-  console.log(`===> ProId: `, id)
+ 
+    const baseUrl = process.env.DUMMY_BASE_URL;
+    const endpoint = category
+      ? `${baseUrl}/products/category/${category}`
+      : `${baseUrl}/products/${id}`;
 
-  const {category =''} = await searchParams;
-  if(!category){
+    const response = await fetch(endpoint);
 
-    const response = await fetch(`${process.env.DUMMY_BASE_URL}/products/${id}`);
     const product = await response.json();
-    console.log(`===> Product: `, product);
-    
     return NextResponse.json(product);
-  }else{
-    const response = await fetch(`${process.env.DUMMY_BASE_URL}/products/categories/${category}`);
-    const product = await response.json();
-    console.log(`===> Product: `, product);
-    
-    return NextResponse.json(product);
-  }
+  
 
 }
